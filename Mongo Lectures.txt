@@ -1,0 +1,154 @@
+
+
+
+----------------------------------------------------------------- MongoDB -----------------------------------------------------------------------------
+
+-------------------------------------Lecture 1:
+
+mongo means huge. It can store a huge amount of data.
+Mongo is highly scalable & flexible, it doesn't have a structure.
+We need to add fields like name, age etc. 
+Key value pairs are made.
+
+Data is stored together, less relations and it is very fast.
+
+A database has collection ( tables ) and each collection has documents ( rows ) --> JSON Format
+It is stored in JSON Format but behind the scenes it is stored in BSON format ( BSON Binary structure encodes type and length information, which allows it to be 
+traversed much more quickly compared to JSON )
+
+Nested documents are possible.
+
+-------------------------------------Lecture 2:
+Mongo installation on Windows ( already done in previous lectures)
+Alongwith mongosh
+
+-------------------------------------Lecture 3:
+Mongo installation on Fedora --> Linux ( check documentation if needed )
+
+-------------------------------------Lecture 4:
+This has to be done in mongo shell
+show dbs --> list all the available dbs
+use <name of db> -------> it creates a database of this name if this doesn't exist
+
+db.students.insertOne({name:"Suhaib", age:22})   -----> we don't need to write the db name again & again so we use just (db) so it knows we are in that db, we created a 
+collection called students and inserted a field in JSON format too
+
+db.students.find() -----> all documents will come. ID is unique identifier for each document
+
+
+-------------------------------------Lecture 5:
+
+Now we work on nested documents
+
+db.students.updateOne({name:"Suhaib"}, {$set:{ idCards:{ has CNIC: true, has License: true }}})   ---------> now what does it do that it takes the first argument that
+we want to change and after comma separation we set values, it will update if it's already there else it will add if it's not there, so it is adding here.
+So basically students is a document and it is holding another document idCards within itself.
+100 levels of nesting is possible with 16MB size of each document.
+
+db.students.updateMany({}, {$set:{hobby:"Sports"}}) -------> if we want to update all, we left the first JSON blank and update the second JSON. We can add [] this as 
+well to make an array.
+
+db.students.find({hobby:"Sports"})   ---> Mongo will find for us all the fields with sports as hobby in it. It is smart and if you add .count(), it will give count too.
+ 
+db.students.find({'idCards.has CNIC' : true})  ---> this is how you give query to find something in nested documents. You have to give the JSON in '' single quotations.
+
+
+-------------------------------------Lecture 6:
+CRUD in Mongodb.  ( create, Read, Update, Delete )
+
+insertOne
+insertMany
+
+find
+findOne
+
+updateOne
+updateMany
+replaceOne
+
+deleteOne
+deleteMany
+
+
+-------------------------------------Lecture 7:
+
+db.students.find()  ---> all documents at once but it return pointer and 20 docs, because if there are million of records, it will not dump. It provides a list/array
+that we can iterate over.
+db.students.find({age:19})  ---> all 19 age people, filter based
+db.students.findOne({age:19}) ---> only fetches the first record of all 19, order is maintained
+
+db.students.find().count() ---> gives you numbers of records
+db.students.find().forEach( (x) => {printjson(x)}) ---> You can run a loop too in Mongo and it prints entire records, prints all json.
+
+
+db.students.find().limit(3) ---> it limits the records output
+
+Remember that all these . functions return cursor there they won't work with (One) type of query
+
+$ is a reserved keyword and only mongodb understands it..
+
+db.students.find({age: {$lt:12} }) ---> This dumps all students with age less than 12
+db.students.find({age: {$gt:12} }) ---> greater than 12
+db.students.find({age: {$lt:15, $gt:10} }) ---> We have set limit here now
+
+db.students.find().toArray() ----> only if you really wish to see all the records / documents
+
+
+-------------------------------------Lecture 8:
+
+db.students.insert({name:"Minha", age:2})
+db.students.insertOne() --> only inserts one document
+db.students.insertMany([{}.{}]) ---> we have to provide a list first [] and then JSON inside {} to insert many documents at once.
+
+
+-------------------------------------Lecture 9:
+
+db.students.updateOne({name:"Suhaib"},{$set:{age:15}})  ---> update is different than create and read, the first JSON is what document we want to update / basically a
+filter and second JSON is actually what we want to update. It's different because a JSON is present within a JSON initiated by $set which is understood by Mongodb.
+
+db.students.updateMany({age:12},{$set:{age:13}})  ---> this update many updates all those students who are 12 to 13.
+
+db.students.updateMany({age:13},{$set:{isEligible: true}}) ---> all the age 13 will be updated to true eligible, as isEligible is not present, it will be created automatically.
+As this key wasnot present, it will be made.
+
+db.students.updateMany({age:{$gte:14}},{$set:{isEligible: true}})  ---> Here the filter is gte 14, all greater than equals to 14 will be set to Eligible true.
+
+
+-------------------------------------Lecture 10:
+
+db.students.deleteOne({name:"Minha"}) ---> deletes this documents.
+
+db.students.deleteMany({})  --> All documents will be deleted.
+
+db.students.deleteMany({age:13})  ---> All the 13 aged will be deleted.
+
+
+-------------------------------------Lecture 11:
+Column Query / Projection
+
+If you want to grab certain column and not all the data you can use the filter and options in find like this:
+db.students.find({},{name:1})  --->It selects all, as first JSON in empty and fetches the column of name from entire data. It will grab id as well because it is 
+inclusive therefore if you need to drop that too, you can add comma separation:
+
+db.students.find({},{name:1, _id:0}) ---> these numbers represent if we want to grab or not. 
+
+
+-------------------------------------Lecture 12:
+
+Relational Database has schema because for example if there's a table called students and it has data like name and age, if another data comes that has a separate field
+like CNIC or somethings, you have to Alter entire table, entire schema is going to be changed...
+
+BUT!!! MONGODB is schemaless, you can add or delete at any point without changing your collection or other documents. If new record comes with a new field, it will be added
+for that record and rest of records remain same, no need to make any change in rest of collection.
+
+As we know that we can add anything, therefore it can create a great mess, so at a level we have to create our own schema for our application to make it organized means
+different collections. 
+Schema is introduced by making ourselves, we can add related thing to one collection but not everything in just single collection.
+
+
+-------------------------------------Lecture 13:
+
+Datatypes in MongoDB.
+
+
+
