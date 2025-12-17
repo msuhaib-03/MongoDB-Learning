@@ -149,6 +149,68 @@ Schema is introduced by making ourselves, we can add related thing to one collec
 -------------------------------------Lecture 13:
 
 Datatypes in MongoDB.
+Number, Text, Boolean, Array, ISO date, timestamp
+
+typeof --> it can be used to check data type.
+
+-------------------------------------Lecture 14:
+To drop collections, you have to be inside that db first and then run this query.
+db.dropDatabase()    -----> This deletes all the collections inside that db.
+
+To drop just 1 collection if there are many, run this query inside db:
+db.<collection name>.drop()    ---------> Only drops a specific collection
+
+
+-------------------------------------Lecture 15:
+
+insertMany(data,option)
+What happens is that in insertMany everything goes in sequence, and we can give _id from our side as well, and same id return fail/false as it already exists, but what
+happens is that if an object fails to go inside collection, the rest later ones and upcoming also fail due to just 1 mismatch earlier. 
+Therefore we use the option in which we can provide 
+ordered:false
+
+db.books.insertMany([{_id:1, name:"A"}, {_id:2, name:"B"}, {_id:1, name:"C"}], {ordered:false})
+
+Error will occur because of same id, but the order of sequence is not causing error and removal, the later elements will be added too.
+
+-------------------------------------Lecture 16:
+
+STRING VALIDATIONS!!
+
+db.createCollection("non fiction")
+db.non-fiction.insertOne({name:"ABC"})
+db.non-fiction.insertOne({name:123})
+
+Now if we check our collection, we will see both but the problem is that the name of book has to be string, not a number so we have to do string validation.
+
+We will define validation in JSON 
+db.createCollection("non-fiction",
+   {validation:{
+	$jsonSchema:{
+		required:['name','price'],
+		properties:{
+			name:{
+				bsonType:'string',
+				description:'must be a string and required',
+		},
+			price:{
+				bsonType:'number',
+				description:'must be a string and required'
+				}
+			}
+				}
+	}, validationAction:"error" 
+})
+
+Now in future if you add any more fields, they will be added without any problem because there's no validation for it but if you want modification inside the same one,
+you have to run a query like this:
+db.runCommand({
+collMod:'non-fiction',
+validator: })    -----------------> and the changes can be made inside because rest of query looks like above.
+
+
+
+-------------------------------------Lecture 17:
 
 
 
