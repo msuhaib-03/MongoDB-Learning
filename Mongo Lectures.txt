@@ -212,5 +212,50 @@ validator: })    -----------------> and the changes can be made inside because r
 
 -------------------------------------Lecture 17:
 
+Write concern in mongodb.
+Speed matters as db is slower. So we use writeconcern so acknowledge is fast but might be false. We not sure if it is written or not but it is fast.
+Journal is false, not made. 
 
+db.books.insertOne({name:"A", price:1} {writeConcern:{w:0, j:false}})
+
+
+-------------------------------------Lecture 18:
+
+ATOMICITY in MongoDb
+
+It is achieved on a document level. 
+
+For example if there were 10 documents, 5 were inserted and there's a transaction problem and remaining 5 couldnot enter, the already inserted 5 documents will not
+rollback now. So atomicity is achieved at document level and not collection level. 
+
+
+-------------------------------------Lecture 19:
+
+Download MongoDB command line database tools from mongo website.
+Install it and goto installed directory. Copy the bin path and add to environment variable.
+Download JSON / provided in description, copy its path and open cmd and write this:
+mongoimport <path pasted> -d <db name> -c <collection name> --jsonArray  --drop 
+if there are multiple documents, mongoimport get it as one document so in order to specifically define them, we tell it that it is jsonArray.
+
+MongoImport basically helps to import json
+
+
+-------------------------------------Lecture 20:
+
+Comparison operators in MongoDB
+
+db.students.find({age:5})
+db.students.find({age:{$eq:5}})
+db.students.find({age:{$ne:5}})
+db.students.find({age:{$gt:5}})
+db.students.find({age:{$gte:5}})
+db.students.find({age:{$lt:5}})
+db.students.find({age:{$lte:5}})
+db.students.find({age:{$in:[5,8]}})   -----> in is basically a list which finds in the specific variable like age here.
+db.students.find({age:{$nin:[5,7]}})
+
+
+-------------------------------------Lecture 21:
+
+Logical Operators in MongoDB.
 
