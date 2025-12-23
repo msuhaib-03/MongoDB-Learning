@@ -258,4 +258,42 @@ db.students.find({age:{$nin:[5,7]}})
 -------------------------------------Lecture 21:
 
 Logical Operators in MongoDB.
+OR, NOR, NOT, AND
+
+Always a list is provided to run the logical operators query. 
+
+db.students.find({ $or:[ {age:{$lte:10}}, {age:{$gte:12}} ]})
+
+db.students({ $and:[{age:{$lt:11}},{Hobbies:'walk'}]})
+Now this query may make you confused about our usual JSON query that results can be achieved without using $and operator but what happens is that when you enter JSON,
+only 2nd JSON query works and gets you result, first JSON gets ignored. Below is implementation:
+db.students.find({age:{$lt:11}, age:{$gt:5}})  ---> Here the 2nd query: gt:5 works and it will violate the first one because students with age>11 will also appear.
+
+
+db.students({ $and:[{age: {$not: {$lt:11}}} ,{Hobbies:'walk'}]})
+
+
+
+-------------------------------------Lecture 22:
+
+To check if a particular field exists in our document we use $exists..
+
+db.students.find({hasMacbook:{$exists:true}})
+
+To check if data type is that what we want or for checking / surity, we use $type..
+Each type has a specific number and can be checked from documentation.
+
+db.students.find({hasMacbook:{$exists:true, $type:8 }})   --> 8 is boolean
+
+
+-------------------------------------Lecture 23:
+
+$expr --> It allows use of aggregate expression within query language. The query may include arithmetic and logical operators. There's a full story inside $expr.
+$regex -->  Seach on a string / match-patterns
+$mod --> modulo arithmetic on a result. [<divisor>,<remainder>]
+$text --> text indexed field. All documents fetched with the searched index. For that you'll need to createIndex test on a field. and then $search. 
+
+
+-------------------------------------Lecture 24:
+
 
